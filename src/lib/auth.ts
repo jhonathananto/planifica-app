@@ -11,7 +11,8 @@ export type UserProfile = {
 
 export async function requireProfile(): Promise<UserProfile> {
   const supabase = await createClient();
-  const { data: { claims } } = await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+  const claims = data?.claims;
   if (!claims?.sub) redirect("/login");
 
   const { data: profile, error } = await supabase
@@ -35,4 +36,3 @@ export async function requireTeacher(): Promise<UserProfile> {
   if (profile.role !== "docente") redirect("/admin");
   return profile;
 }
-

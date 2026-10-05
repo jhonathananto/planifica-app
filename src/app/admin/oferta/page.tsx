@@ -110,7 +110,7 @@ export default async function OfferingPage({ searchParams }: Props) {
         <div className="section-top"><div><span className="tiny-label">ASIGNACIONES</span><h2>Docentes, materias y paralelos</h2></div><span className="count-badge">{courses.length}</span></div>
         <div className="assigned-list">{courses.map((course) => {
           const curriculumRow = curriculumById.get(course.curriculum_subject_id ?? "");
-          const subject = curriculumRow ? subjectById.get(curriculumRow.subject_id) : null;
+          const subject = curriculumRow?.subject_id ? subjectById.get(curriculumRow.subject_id) : null;
           const semesterOffer = semOfferingById.get(course.semester_offering_id ?? "");
           const academic = semesterOffer ? academicById.get(semesterOffer.academic_offering_id ?? "") : null;
           const period = academic ? periodById.get(academic.period_id ?? "") : null;

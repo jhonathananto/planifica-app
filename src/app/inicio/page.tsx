@@ -3,7 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export default async function InicioPage() {
   const supabase = await createClient();
-  const { data: { claims } } = await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+  const claims = data?.claims;
   if (!claims?.sub) redirect("/login");
 
   const { data: profile } = await supabase
@@ -15,4 +16,3 @@ export default async function InicioPage() {
   if (!profile?.is_active) redirect("/login?error=cuenta");
   redirect(profile.role === "admin" ? "/admin" : "/docente");
 }
-
