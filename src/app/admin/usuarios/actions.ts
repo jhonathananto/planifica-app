@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { requireAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -11,6 +12,19 @@ export async function inviteUserAction(formData: FormData) {
   const fullName = String(formData.get("full_name") ?? "").trim();
   if (!email || !fullName) redirect("/admin/usuarios?error=datos");
 
+  const requestHeaders = await headers();
+  const siteUrl = process.env.APP_URL ?? requestHeaders.get("origin");
+  if (!siteUrl) redirect("/admin/usuarios?error=config");
+
+  let redirectTo: string;
+  try {
+    const callbackUrl = new URL("/auth/callback", siteUrl);
+    callbackUrl.searchParams.set("next", "/auth/establecer-contrasena");
+    redirectTo = callbackUrl.toString();
+  } catch {
+    redirect("/admin/usuarios?error=config");
+  }
+
   let supabase: ReturnType<typeof createAdminClient>;
   try {
     supabase = createAdminClient();
@@ -19,6 +33,7 @@ export async function inviteUserAction(formData: FormData) {
   }
   const { data, error } = await supabase.auth.admin.inviteUserByEmail(email, {
     data: { full_name: fullName },
+    redirectTo,
   });
   if (error || !data.user) redirect("/admin/usuarios?error=invitacion");
 

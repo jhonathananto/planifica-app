@@ -24,7 +24,7 @@ El detalle de campos y su tipo de entrada está en [docs/campos-y-flujos.md](doc
 1. Cree un proyecto Supabase y copie la URL del proyecto y la clave publicable.
 2. En Supabase, ejecute la migración `supabase/migrations/20261004000000_initial_schema.sql` desde el SQL Editor.
 3. Desactive el registro público de Auth; las cuentas deben crearse mediante invitación del administrador. Cree la primera cuenta institucional e indique el rol administrador ejecutando el procedimiento descrito en la migración.
-4. Copie `.env.example` a `.env.local` y complete las variables. `SUPABASE_SERVICE_ROLE_KEY` se requiere para las invitaciones y cambios administrativos de cuentas; se usa solo en el servidor. Nunca la publique con prefijo `NEXT_PUBLIC_`.
+4. Copie `.env.example` a `.env.local` y complete las variables. `APP_URL` es la URL pública de la aplicación (en local, `http://localhost:3000`). `SUPABASE_SECRET_KEY` se requiere para las invitaciones y cambios administrativos de cuentas; se usa solo en el servidor. Nunca la publique con prefijo `NEXT_PUBLIC_`.
 5. Use Node.js 22 o posterior, instale dependencias con `npm install` y ejecute `npm run dev`.
 
 Este repositorio aún no contiene credenciales de un proyecto Supabase; la conexión y las cuentas reales se activan al configurar esas variables.
@@ -42,9 +42,9 @@ Para habilitar el primer administrador, primero invite su cuenta desde Supabase 
 
 1. Publique el repositorio en GitHub, GitLab o Bitbucket.
 2. Importe el repositorio en Vercel y deje que Vercel detecte Next.js.
-3. Añada en Vercel las mismas variables de `.env.example` para Preview y Production.
+3. Añada en Vercel las variables de `.env.example` para Preview y Production. Configure `APP_URL` con el dominio canónico HTTPS de producción.
 4. Ejecute las migraciones SQL en el proyecto Supabase de producción y configure Auth para aceptar únicamente usuarios invitados.
-5. Configure los dominios permitidos y la URL de retorno de Auth en Supabase para el dominio de Vercel.
+5. En Supabase Auth → URL Configuration, agregue `APP_URL/auth/callback` a las Redirect URLs permitidas. La invitación lleva al docente a una pantalla para definir su contraseña; su usuario es el correo institucional.
 6. Cargue los formatos institucionales aprobados al bucket privado de plantillas antes de habilitar la exportación DOCX.
 
 ## Decisiones para el primer incremento

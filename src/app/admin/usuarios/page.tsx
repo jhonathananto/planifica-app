@@ -11,7 +11,7 @@ export default async function UsersPage({ searchParams }: Props) {
     .order("full_name", { ascending: true });
 
   const errors: Record<string, string> = {
-    config: "Falta SUPABASE_SERVICE_ROLE_KEY en el entorno de Vercel o .env.local. Agrégala como variable privada de servidor.",
+    config: "Configura SUPABASE_SECRET_KEY y APP_URL en el entorno de Vercel o .env.local para enviar invitaciones.",
     datos: "Completa los campos y verifica el rol seleccionado.",
     invitacion: "No se pudo enviar la invitación. Revisa la configuración de correo de Supabase Auth.",
     perfil: "La invitación se creó, pero no se pudo actualizar el perfil. Revisa el registro de esta cuenta.",
