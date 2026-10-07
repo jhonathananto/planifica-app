@@ -77,9 +77,9 @@ export default async function SyllabusPage({ params }: Props) {
         </Link>)}</div> : <p className="plan-list-empty">Cuando crees un plan desde una fecha del Anexo 1, aparecerá aquí.</p>}
       </section>
       <section className="surface-card plan-list-section">
-        <div className="section-top"><div><span className="tiny-label">SECCIONES NARRATIVAS</span><h2>Completa el contenido del sílabo</h2></div>
+        <div className="section-top"><div><span className="tiny-label">SECCIONES NARRATIVAS · 12 PASOS CON AUTOGUARDADO</span><h2>Completa el contenido del sílabo</h2></div>
           <Link className="button button-outline button-small" href={"/docente/silabo/" + syllabus.id + "/contenido"}>Editar contenido <span>↗</span></Link></div>
-        <p className="plan-list-empty">Guarda la fundamentación, evaluación, unidades, metodología, recursos y bibliografía como borrador.</p>
+        <p className="plan-list-empty">Multi-step form I–XII con autoguardado: datos, fundamentación, objetivos, evaluación, contenidos, plan temático, unidades, metodología, recursos, bibliografía, firmas y Anexo 1.</p>
       </section>
     </main>
   );
