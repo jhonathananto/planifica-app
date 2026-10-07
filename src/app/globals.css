@@ -420,3 +420,38 @@ h1, h2, h3, .brand strong { font-family: "Manrope", "Segoe UI", sans-serif; lett
 .plan-copy-field > span { color: #8f9b93; font-size: 9px; font-weight: 700; }
 .plan-copy-field p, .plan-long-copy { margin: 5px 0 0; color: #66766e; font-size: 10px; line-height: 1.75; white-space: pre-wrap; }
 .bibliography-view { margin-bottom: 14px; }
+
+/* ---- Inspira UI (equivalentes React sin dependencias) ---- */
+.aurora-root { position: relative; overflow: hidden; isolation: isolate; }
+.aurora-blob { position: absolute; width: 46rem; height: 46rem; border-radius: 50%; filter: blur(90px); opacity: .38; z-index: 0; pointer-events: none; animation: aurora-drift 18s ease-in-out infinite alternate; }
+.aurora-blob-a { left: -14rem; top: -16rem; background: radial-gradient(circle at 30% 30%, #bff0dd, #7cc7a8 45%, transparent 72%); }
+.aurora-blob-b { right: -16rem; top: -10rem; background: radial-gradient(circle at 60% 40%, #cfe4fb, #8fb8e8 48%, transparent 74%); animation-delay: -6s; opacity: .32; }
+.aurora-blob-c { left: 22%; bottom: -24rem; background: radial-gradient(circle at 50% 50%, #fbe8c4, #e9c07a 46%, transparent 72%); animation-delay: -12s; opacity: .28; }
+.aurora-grid { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .55;
+  background-image: linear-gradient(rgba(20,99,86,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(20,99,86,.07) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 20%, black 35%, transparent 78%); }
+.aurora-content { position: relative; z-index: 1; display: contents; }
+@keyframes aurora-drift {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to { transform: translate3d(60px,40px,0) scale(1.12); }
+}
+.reveal-text { display: inline; }
+.reveal-word { display: inline-block; opacity: 0; transform: translateY(14px); filter: blur(6px); animation: reveal-in .7s cubic-bezier(.22,1,.36,1) forwards; }
+@keyframes reveal-in { to { opacity: 1; transform: none; filter: blur(0); } }
+.spotlight-card { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: #fff; box-shadow: 0 5px 20px rgba(25,53,45,.025); transition: transform .2s, box-shadow .2s, border-color .2s; }
+.spotlight-card:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(20,99,86,.12); border-color: #cfe3d8; }
+.spotlight-glow { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity .25s;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(32,150,120,.14), transparent 65%); }
+.spotlight-card:hover .spotlight-glow { opacity: 1; }
+.spotlight-inner { position: relative; }
+.shimmer-btn { position: relative; overflow: hidden; }
+.shimmer-btn .shimmer-label { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; }
+.shimmer-btn .shimmer-sheen { position: absolute; top: 0; bottom: 0; width: 45%; z-index: 0; background: linear-gradient(105deg, transparent, rgba(255,255,255,.45), transparent); transform: translateX(-140%) skewX(-18deg); }
+.shimmer-btn.shimmer-on .shimmer-sheen { animation: shimmer-sweep 2.8s ease-in-out infinite; }
+@keyframes shimmer-sweep { 0% { transform: translateX(-140%) skewX(-18deg); } 55%, 100% { transform: translateX(320%) skewX(-18deg); } }
+.glass-card { background: rgba(255,255,255,.82) !important; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob, .reveal-word, .shimmer-btn.shimmer-on .shimmer-sheen { animation: none; }
+  .reveal-word { opacity: 1; transform: none; filter: none; }
+}

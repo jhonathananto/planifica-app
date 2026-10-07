@@ -2,6 +2,8 @@ import Link from "next/link";
 import { requireTeacher } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { createSyllabusAction } from "./actions";
+import { SpotlightCard } from "@/components/inspira/spotlight-card";
+import { RevealText } from "@/components/inspira/reveal-text";
 
 type CourseOffering = { id: string; parallel: string; modality: string; curriculum_subject_id: string; semester_offering_id: string; is_enabled: boolean };
 type CurriculumSubject = { id: string; subject_id: string; semester_id: string };
@@ -48,7 +50,7 @@ export default async function TeacherHomePage() {
   return (
     <main className="page-content teacher-content">
       <div className="page-heading">
-        <div><p className="eyebrow">MI CARGA ACADÉMICA</p><h1>Hola, {profile.full_name?.split(" ")[0] || "docente"}.</h1>
+        <div><p className="eyebrow">MI CARGA ACADÉMICA</p><h1><RevealText text={"Hola, " + (profile.full_name?.split(" ")[0] || "docente") + "."} /></h1>
           <p>Estas son las asignaturas que te asignaron para el período. Desde aquí preparas cada documento.</p></div>
         <span className="period-count">{offerings.length} asignaturas</span>
       </div>
@@ -63,7 +65,7 @@ export default async function TeacherHomePage() {
             const career = academic ? careersById.get(academic.career_id) : null;
             const period = academic ? periodsById.get(academic.period_id) : null;
             const syllabusId = syllabiByCourse.get(offering.id);
-            return <article className="course-card" key={offering.id}>
+            return <SpotlightCard className="course-card" key={offering.id}>
               <div className="course-card-head"><span className="course-icon">▦</span><span className={"status-pill " + (offering.is_enabled && period?.status === "abierto" ? "status-open" : "status-cerrado")}>{period?.name ?? "Período asignado"}</span></div>
               <p className="course-code">{subject?.code ?? "ASIGNATURA"} · {offering.parallel}</p>
               <h2>{subject?.name ?? "Asignatura asignada"}</h2>
@@ -73,7 +75,7 @@ export default async function TeacherHomePage() {
                   <form action={createSyllabusAction}><input type="hidden" name="course_offering_id" value={offering.id} /><button className="document-row document-button" type="submit"><span className="document-icon">＋</span><span><strong>Crear sílabo</strong><small>Empieza con los datos de la oferta</small></span><b>→</b></button></form>}
               </div>
               <div className="course-footer"><span className="tiny-label">OFERTA · {period?.code ?? "PERÍODO"}</span><span>{offering.is_enabled && period?.status === "abierto" ? "Edición habilitada" : "Consulta"}</span></div>
-            </article>;
+            </SpotlightCard>;
           })}
         </section>
       ) : (

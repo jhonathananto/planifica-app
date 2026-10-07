@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { SpotlightCard } from "@/components/inspira/spotlight-card";
+import { RevealText } from "@/components/inspira/reveal-text";
 
 export default async function AdminHomePage() {
   const supabase = await createClient();
@@ -27,15 +29,15 @@ export default async function AdminHomePage() {
   return (
     <main className="page-content">
       <div className="page-heading">
-        <div><p className="eyebrow">PANEL DE ADMINISTRACIÓN</p><h1>Buenos días. Este es tu centro de control.</h1>
+        <div><p className="eyebrow">PANEL DE ADMINISTRACIÓN</p><h1><RevealText text="Buenos días. Este es tu centro de control." /></h1>
           <p>Configura el período y la oferta antes de habilitar la planificación docente.</p></div>
         <Link className="button button-primary" href="/admin/periodos">Gestionar períodos <span>↗</span></Link>
       </div>
       <section className="stats-grid" aria-label="Resumen institucional">
-        {stats.map((stat) => <article className="stat-card" key={stat.label}>
+        {stats.map((stat) => <SpotlightCard className="stat-card" key={stat.label}>
           <div className={"stat-icon " + stat.tone}>{stat.label === "Carreras" ? "⌘" : stat.label === "Asignaturas" ? "▦" : stat.label === "Docentes" ? "♙" : "◷"}</div>
           <div className="stat-value">{stat.value}</div><div className="stat-label">{stat.label}</div><div className="stat-note">{stat.note}</div>
-        </article>)}
+        </SpotlightCard>)}
       </section>
       <section className="admin-grid">
         <article className="surface-card period-highlight">

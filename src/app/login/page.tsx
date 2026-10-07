@@ -1,4 +1,7 @@
 import { signInAction } from "@/app/auth/actions";
+import { AuroraBackground } from "@/components/inspira/aurora-background";
+import { RevealText } from "@/components/inspira/reveal-text";
+import { ShimmerButton } from "@/components/inspira/shimmer-button";
 
 type LoginPageProps = {
   searchParams: Promise<{ error?: string }>;
@@ -7,11 +10,12 @@ type LoginPageProps = {
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const { error } = await searchParams;
   return (
+    <AuroraBackground>
     <main className="login-layout">
       <section className="login-intro">
         <p className="eyebrow">INSTITUTO · PLANIFICACIÓN ACADÉMICA</p>
         <div className="login-mark" aria-hidden="true">PD</div>
-        <h1>Planifica con claridad. Llega listo a clase.</h1>
+        <h1><RevealText text="Planifica con claridad. Llega listo a clase." /></h1>
         <p className="login-copy">
           Organiza tus sílabos, distribuye las actividades de las 16 semanas y
           prepara cada sesión desde un mismo espacio.
@@ -23,7 +27,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         </div>
       </section>
 
-      <section className="login-card">
+      <section className="login-card glass-card">
         <div className="login-card-top">
           <span className="tiny-label">ACCESO INSTITUCIONAL</span>
           <span className="secure-label"><i /> Conexión protegida</span>
@@ -34,7 +38,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <div className="form-error" role="alert">
             {error === "cuenta"
               ? "La cuenta está inactiva o aún no tiene un perfil habilitado."
-              : "No pudimos validar el correo y la contraseña."}
+              : error === "invitacion"
+                ? "No se pudo validar la invitación. Solicita al administrador que te envíe una nueva."
+                : "No pudimos validar el correo y la contraseña."}
           </div>
         )}
         <form action={signInAction} className="login-form">
@@ -42,14 +48,14 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <input id="email" name="email" type="email" autoComplete="username" placeholder="nombre@institucion.edu" required />
           <label htmlFor="password">Contraseña</label>
           <input id="password" name="password" type="password" autoComplete="current-password" placeholder="Tu contraseña" required />
-          <button className="button button-primary button-full" type="submit">
+          <ShimmerButton type="submit">
             Entrar al espacio <span aria-hidden="true">↗</span>
-          </button>
+          </ShimmerButton>
         </form>
         <p className="login-footnote">¿Necesitas acceso? Solicítalo al administrador de la aplicación.</p>
       </section>
       <footer className="login-footer">Planificación Docente <span>·</span> Períodos de 16 semanas</footer>
     </main>
+    </AuroraBackground>
   );
 }
-
