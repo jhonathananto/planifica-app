@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import SyllabusWorkbook from "@/components/syllabus-workbook";
 import { requireTeacher } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
@@ -11,7 +10,7 @@ export default async function SyllabusPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
   const { data: syllabus } = await supabase.from("syllabi")
-    .select("id,course_offering_id,status,workbook_snapshot,content")
+    .select("id,course_offering_id,status,content")
     .eq("id", id).maybeSingle();
   if (!syllabus) notFound();
 
@@ -66,9 +65,8 @@ export default async function SyllabusPage({ params }: Props) {
           <div><span>Período</span><strong>{periodName}</strong></div><div><span>Paralelo</span><strong>{offering?.parallel ?? "—"}</strong></div>
           <div><span>Docente responsable</span><strong>{profile.full_name || "—"}</strong></div><div><span>Modalidad</span><strong>{offering ? "Según oferta académica" : "—"}</strong></div>
         </div>
-        <p className="metadata-note">Estos datos vienen de la oferta institucional. Para corregirlos, solicita el cambio al administrador.</p>
+        <p className="metadata-note">Estos datos vienen de la oferta institucional. Puedes ampliarlos en el paso I del contenido del sílabo.</p>
       </section>
-      <SyllabusWorkbook syllabusId={syllabus.id} initialSnapshot={syllabus.workbook_snapshot as Record<string, unknown>} />
       <section className="surface-card plan-list-section">
         <div className="section-top"><div><span className="tiny-label">PLANIFICACIÓN PREVIA A CLASE</span><h2>Planes de clase</h2></div>
           <Link className="button button-primary button-small" href={"/docente/silabo/" + syllabus.id + "/planificar"}>Nuevo plan <span>↗</span></Link></div>

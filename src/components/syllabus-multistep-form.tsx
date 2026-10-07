@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import RichText from "@/components/rich-text";
 import { SYLLABUS_STEPS, ROMAN, sectionCompletion } from "@/lib/syllabus/sections";
 
 type Props = {
@@ -220,23 +221,20 @@ export default function SyllabusMultiStepForm({ syllabusId, initialContent, chil
   const current = SYLLABUS_STEPS[step];
 
   const statusLabel =
-    saveState === "saving" ? "● Guardando…" :
-    saveState === "error" ? "● Error al guardar" :
-    saveState === "saved" ? `✓ Guardado ${lastSaved}` : "○ Autoguardado activo";
+    saveState === "saving" ? "Guardando…" :
+    saveState === "error" ? "Error al guardar" :
+    saveState === "saved" ? `Guardado ${lastSaved}` : "Autoguardado activo";
 
   return (
     <div id="silabo-form-top" className="multistep-layout">
-      {/* Barra de autoguardado */}
-      <div className={"autosave-bar autosave-" + saveState}>
-        <div>
-          <span className="tiny-label">AUTOGUARDADO</span>
-          <strong className={saveState === "error" ? "save-error" : ""}>{statusLabel}</strong>
-          {saveError ? <small>{saveError}</small> : <small>Cada cambio se almacena automáticamente en la base de datos.</small>}
-        </div>
-        <div className="autosave-progress">
-          <span>{globalProgress}% completado</span>
-          <div className="progress-track"><div className="progress-fill" style={{ width: globalProgress + "%" }} /></div>
-        </div>
+      {/* Barra de autoguardado compacta */}
+      <div className={"autosave-slim autosave-" + saveState} role="status">
+        <span className="autosave-dot" aria-hidden="true" />
+        <strong>{statusLabel}</strong>
+        {saveError ? <small className="save-error">{saveError}</small> : null}
+        <span className="autosave-spacer" />
+        <span className="autosave-pct">{globalProgress}%</span>
+        <span className="autosave-track"><span className="autosave-fill" style={{ width: globalProgress + "%" }} /></span>
       </div>
 
       <div className="multistep-grid">
@@ -307,9 +305,9 @@ export default function SyllabusMultiStepForm({ syllabusId, initialContent, chil
 /* ---------- Campos reutilizables ---------- */
 
 function Text({
-  label, value, onChange, rows = 3, placeholder = "", type = "text",
+  label, value, onChange, rows = 3, placeholder = "", type = "text", maxLength,
 }: {
-  label: string; value: unknown; onChange: (v: string) => void; rows?: number; placeholder?: string; type?: string;
+  label: string; value: unknown; onChange: (v: string) => void; rows?: number; placeholder?: string; type?: string; maxLength?: number;
 }) {
   const v = String(value ?? "");
   if (type === "number") {
@@ -327,9 +325,15 @@ function Text({
     );
   }
   return (
-    <label className="ms-field ms-field-long"><span>{label}</span>
-      <textarea rows={rows} value={v} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
-    </label>
+    <div className="ms-field ms-field-long"><span className="ms-field-label">{label}</span>
+      <RichText
+        value={v}
+        onChange={onChange}
+        placeholder={placeholder}
+        minHeight={rows >= 5 ? 180 : rows === 4 ? 150 : rows === 3 ? 130 : 100}
+        maxLength={maxLength}
+      />
+    </div>
   );
 }
 
@@ -373,11 +377,15 @@ function StepFundamentacion({ content, update }: { content: Record<string, unkno
   const set = (k: string) => (v: string) => update(["fundamentacion", k], v);
   return (
     <div className="ms-grid">
-      <p className="ms-note">Corresponde a <strong>II. FUNDAMENTACIÓN</strong>: redacta cada subsección tal como irá al documento final.</p>
-      <Text label="Introducción — párrafo 1 (importancia de las redes)" value={f("introduccion_1")} onChange={set("introduccion_1")} rows={4} />
-      <Text label="Introducción — párrafo 2 (base para áreas especializadas)" value={f("introduccion_2")} onChange={set("introduccion_2")} rows={4} />
-      <Text label="Introducción — párrafo 3 (conclusión)" value={f("introduccion_3")} onChange={set("introduccion_3")} rows={4} />
-      <Text label="Perfil profesional del tecnólogo" value={f("perfil_profesional")} onChange={set("perfil_profesional")} rows={4} />
+      <p className="ms-note">Corresponde a <strong>II. FUNDAMENTACIÓN</strong>: redacta en el primer cuadro la importancia de la asignatura, su aporte como base de áreas especializadas, las conclusiones y el perfil profesional.</p>
+      <Text
+        label="Fundamentación de la asignatura"
+        value={f("fundamentacion_texto")}
+        onChange={set("fundamentacion_texto")}
+        rows={8}
+        maxLength={10000}
+        placeholder="Importancia de la asignatura en un mundo interconectado, base para áreas especializadas, conclusión y perfil profesional del tecnólogo…"
+      />
       <Text label="Consecución al perfil de egreso" value={f("profile_contribution")} onChange={set("profile_contribution")} rows={4} />
       <Text label="Aporte a otras asignaturas (pre/co-requisitos)" value={f("other_subjects_contribution")} onChange={set("other_subjects_contribution")} rows={4} />
       <Text label="Capacidades generales para el aprendizaje" value={f("general_capabilities")} onChange={set("general_capabilities")} rows={4} />

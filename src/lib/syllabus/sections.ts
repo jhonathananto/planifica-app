@@ -60,8 +60,7 @@ export function defaultContent() {
       docente_responsable: "",
     },
     fundamentacion: {
-      introduccion_1: "", introduccion_2: "", introduccion_3: "",
-      perfil_profesional: "",
+      fundamentacion_texto: "",
       profile_contribution: "", other_subjects_contribution: "",
       general_capabilities: "", cultural_formation: "",
       problem: "", study_object: "", general_objective: "",
@@ -173,6 +172,13 @@ export function mergeWithDefaults(stored: Record<string, unknown> | null | undef
       for (const [k, v] of Object.entries(src.fundamentacion as Record<string, unknown>)) {
         if (typeof v === "string" && !(fund[k] ?? "").toString().trim()) fund[k] = v;
       }
+      // Migración: los 3 párrafos + perfil profesional antiguos se unen en el campo único.
+      if (!String(fund.fundamentacion_texto ?? "").trim()) {
+        const legacy = ["introduccion_1", "introduccion_2", "introduccion_3", "perfil_profesional"]
+          .map((k) => String((src.fundamentacion as Record<string, unknown>)[k] ?? "").trim())
+          .filter(Boolean);
+        if (legacy.length) fund.fundamentacion_texto = legacy.join("\n\n");
+      }
     }
     const ev = out.evaluacion as Record<string, unknown>;
     const oldEv = src.evaluacion as Record<string, unknown> | undefined;
@@ -246,7 +252,9 @@ export function sectionCompletion(content: Record<string, unknown>) {
       else if (v && typeof v === "object") Object.values(v).forEach(collect);
     };
     collect(section);
-    const filled = values.filter((v) => String(v ?? "").trim() !== "" && String(v) !== "0").length;
+    // Ignora etiquetas HTML: un editor enriquecido vacío guarda "<p><br></p>".
+    const plain = (v: unknown) => String(v ?? "").replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
+    const filled = values.filter((v) => plain(v) !== "" && plain(v) !== "0").length;
     result[key] = values.length ? Math.min(100, Math.round((filled / values.length) * 100)) : 0;
   }
   return result;

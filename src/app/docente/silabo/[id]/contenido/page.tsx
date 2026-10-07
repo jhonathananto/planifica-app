@@ -64,13 +64,9 @@ export default async function SyllabusContentPage({ params }: Props) {
 
   return (
     <main className="page-content teacher-content syllabus-content">
-      <div className="breadcrumbs page-breadcrumbs"><Link href={"/docente/silabo/" + id}>Sílabo</Link><span>/</span>Contenido</div>
-      <div className="page-heading compact-heading">
-        <div>
-          <p className="eyebrow">SÍLABO · {String(di.nombre_asignatura || (subject as { name?: string } | null)?.name || "Asignatura")} · 12 SECCIONES</p>
-          <h1>Completa el sílabo paso a paso</h1>
-          <p>Cada cambio se guarda automáticamente en la base de datos. Puedes saltar entre secciones libremente.</p>
-        </div>
+      <div className="slim-page-head">
+        <Link className="slim-back" href={"/docente/silabo/" + id}>← Sílabo</Link>
+        <strong className="slim-title">{String(di.nombre_asignatura || (subject as { name?: string } | null)?.name || "Asignatura")} · Contenido I–XII</strong>
         <span className={"status-pill status-" + (syllabus.status === "aprobado" ? "open" : "draft")}>
           {syllabus.status === "aprobado" ? "Aprobado" : "Borrador"}
         </span>
