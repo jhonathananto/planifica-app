@@ -561,4 +561,3 @@ h1, h2, h3, .brand strong { font-family: "Manrope", "Segoe UI", sans-serif; lett
 .rich-text .ql-editor.ql-blank::before { color: #abb7b1; font-style: normal; }
 .rich-text-foot { display: flex; justify-content: flex-end; margin-top: 5px; color: #98a39c; font-size: 10px; }
 .rich-text-over { color: #a54537; font-weight: 700; }
-}
