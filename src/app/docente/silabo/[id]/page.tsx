@@ -54,30 +54,28 @@ export default async function SyllabusPage({ params }: Props) {
     <main className="page-content teacher-content syllabus-content">
       <div className="breadcrumbs page-breadcrumbs"><Link href="/docente">Mis asignaturas</Link><span>/</span>{subjectName}<span>/</span>Sílabo</div>
       <div className="page-heading syllabus-heading">
-        <div><p className="eyebrow">SÍLABO · {periodName} · PARALELO {offering?.parallel ?? "—"}</p>
+        <div><p className="eyebrow">SÍLABO · {periodName}</p>
           <h1>{subjectName}</h1><p>{careerName} · Responsable: {profile.full_name || "Docente"}</p></div>
         <span className={"status-pill status-" + (syllabus.status === "aprobado" ? "open" : "draft")}>{syllabus.status === "aprobado" ? "Aprobado" : "Borrador"}</span>
       </div>
       <section className="surface-card syllabus-sections">
-        <div className="syllabus-section-title"><span className="step-index">01</span><div><span className="tiny-label">DATOS INFORMATIVOS</span><h2>Identificación vinculada a la oferta</h2></div></div>
+        <div className="syllabus-section-title"><span className="step-index">01</span><div><span className="tiny-label"></span><h2>Datos Informativos</h2></div></div>
         <div className="metadata-grid">
           <div><span>Carrera</span><strong>{careerName}</strong></div><div><span>Asignatura</span><strong>{subjectName}</strong></div>
           <div><span>Período</span><strong>{periodName}</strong></div><div><span>Paralelo</span><strong>{offering?.parallel ?? "—"}</strong></div>
           <div><span>Docente responsable</span><strong>{profile.full_name || "—"}</strong></div><div><span>Modalidad</span><strong>{offering ? "Según oferta académica" : "—"}</strong></div>
         </div>
-        <p className="metadata-note">Estos datos vienen de la oferta institucional. Puedes ampliarlos en el paso I del contenido del sílabo.</p>
       </section>
       <section className="surface-card plan-list-section">
-        <div className="section-top"><div><span className="tiny-label">PLANIFICACIÓN PREVIA A CLASE</span><h2>Planes de clase</h2></div>
-          <Link className="button button-primary button-small" href={"/docente/silabo/" + syllabus.id + "/planificar"}>Nuevo plan <span>↗</span></Link></div>
-        {plans?.length ? <div className="plan-list">{plans.map((plan) => <Link className="plan-list-row" href={"/docente/plan/" + plan.id} key={plan.id}>
-          <span className="plan-list-date">{plan.class_date}</span><span className="plan-list-copy"><strong>Plan de clase N.º {plan.plan_number}</strong><small>{Math.round(plan.duration_minutes / 60 * 10) / 10} horas · {plan.status === "finalizado" ? "Finalizado" : "Borrador"}</small></span><b>→</b>
-        </Link>)}</div> : <p className="plan-list-empty">Cuando crees un plan desde una fecha del Anexo 1, aparecerá aquí.</p>}
+        <div className="section-top"><div><span className="tiny-label">SECCIONES DEL SÍLABO</span><h2>Edita el sílabo</h2></div>
+          <Link className="button button-secondary button-small" href={"/docente/silabo/" + syllabus.id + "/contenido"}>Editar contenido <span>↗</span></Link></div>
       </section>
       <section className="surface-card plan-list-section">
-        <div className="section-top"><div><span className="tiny-label">SECCIONES NARRATIVAS · 12 PASOS CON AUTOGUARDADO</span><h2>Completa el contenido del sílabo</h2></div>
-          <Link className="button button-outline button-small" href={"/docente/silabo/" + syllabus.id + "/contenido"}>Editar contenido <span>↗</span></Link></div>
-        <p className="plan-list-empty">Multi-step form I–XII con autoguardado: datos, fundamentación, objetivos, evaluación, contenidos, plan temático, unidades, metodología, recursos, bibliografía, firmas y Anexo 1.</p>
+          <div className="section-top"><div><span className="tiny-label">PLANIFICACIÓN PREVIA</span><h2>Planes de clase</h2></div>
+            <Link className="button button-primary button-small" href={"/docente/silabo/" + syllabus.id + "/planificar"}>Nuevo plan <span>↗</span></Link></div>
+          {plans?.length ? <div className="plan-list">{plans.map((plan) => <Link className="plan-list-row" href={"/docente/plan/" + plan.id} key={plan.id}>
+            <span className="plan-list-date">{plan.class_date}</span><span className="plan-list-copy"><strong>Plan de clase N.º {plan.plan_number}</strong><small>{Math.round(plan.duration_minutes / 60 * 10) / 10} horas · {plan.status === "finalizado" ? "Finalizado" : "Borrador"}</small></span><b>→</b>
+          </Link>)}</div> : <p className="plan-list-empty">Todos los planes de clase, en un solo lugar.</p>}
       </section>
     </main>
   );
