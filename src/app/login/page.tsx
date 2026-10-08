@@ -13,25 +13,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     <AuroraBackground>
     <main className="login-layout">
       <section className="login-intro">
-        <p className="eyebrow">INSTITUTO · PLANIFICACIÓN ACADÉMICA</p>
+        <p className="eyebrow">INSTITUTO SUPERIOR TECNOLÓGICO ISMAEL PÉREZ PAZMIÑO</p>
         <div className="login-mark" aria-hidden="true">PD</div>
-        <h1><RevealText text="Planifica con claridad. Llega listo a clase." /></h1>
+        <h1><RevealText text="Planifica con claridad. Evita que te reporten los Coordinadores." /></h1>
         <p className="login-copy">
           Organiza tus sílabos, distribuye las actividades de las 16 semanas y
           prepara cada sesión desde un mismo espacio.
         </p>
-        <div className="login-proof">
-          <span>01 / Oferta académica</span>
-          <span>02 / Sílabo y Anexo 1</span>
-          <span>03 / Plan de clase</span>
-        </div>
       </section>
 
       <section className="login-card glass-card">
-        <div className="login-card-top">
-          <span className="tiny-label">ACCESO INSTITUCIONAL</span>
-          <span className="secure-label"><i /> Conexión protegida</span>
-        </div>
         <h2>Iniciar sesión</h2>
         <p>Ingresa con la cuenta que te asignó el administrador.</p>
         {error && (
@@ -45,16 +36,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         )}
         <form action={signInAction} className="login-form">
           <label htmlFor="email">Correo institucional</label>
-          <input id="email" name="email" type="email" autoComplete="username" placeholder="nombre@institucion.edu" required />
+          <input id="email" name="email" type="email" autoComplete="username" placeholder="nombre@instipp.edu.ec" required />
           <label htmlFor="password">Contraseña</label>
           <input id="password" name="password" type="password" autoComplete="current-password" placeholder="Tu contraseña" required />
           <ShimmerButton type="submit">
-            Entrar al espacio <span aria-hidden="true">↗</span>
+            Iniciar sesión <span aria-hidden="true">↗</span>
           </ShimmerButton>
         </form>
         <p className="login-footnote">¿Necesitas acceso? Solicítalo al administrador de la aplicación.</p>
       </section>
-      <footer className="login-footer">Planificación Docente <span>·</span> Períodos de 16 semanas</footer>
+      <footer className="login-footer">Planificación Docente</footer>
     </main>
     </AuroraBackground>
   );

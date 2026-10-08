@@ -82,7 +82,6 @@ export default async function TeacherHomePage() {
         <section className="surface-card teacher-empty"><div className="empty-illustration">▦</div><span className="tiny-label">SIN ASIGNATURAS ASIGNADAS</span><h2>Tu espacio está listo.</h2>
           <p>Cuando el administrador habilite la oferta académica y te asigne una asignatura, aparecerá aquí el acceso al sílabo y los planes de clase.</p></section>
       )}
-      <div className="teacher-tip"><span>✦</span><p><strong>Un flujo, tres pasos:</strong> completa el sílabo, organiza las 16 semanas en el Anexo 1 y crea cada plan de clase desde sus temas.</p></div>
     </main>
   );
 }

@@ -50,7 +50,6 @@ export default function TeacherSidebar() {
       </div>
       <div className="sidebar-bottom">
         <span className="teacher-chip">ESPACIO DOCENTE</span>
-        <span className="side-caption">Tu carga académica y tus documentos en un solo lugar.</span>
       </div>
     </aside>
   );
